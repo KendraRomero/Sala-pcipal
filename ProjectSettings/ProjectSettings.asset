@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: video_1
-  productName: Sala pcipal
+  productName: GAMAT
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -137,6 +137,8 @@ PlayerSettings:
   bundleVersion: 0.1
   preloadedAssets:
   - {fileID: 11400000, guid: c51a48b8d0cea074a8b18e0085593dd0, type: 2}
+  - {fileID: -3583632937845517763, guid: 5dea03dde0d40434391c7fc94bb97016, type: 2}
+  - {fileID: 11400000, guid: 43b78ffd46dced647ac4f71eb0fe80dd, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -156,7 +158,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.video_1.Salapcipal
+    Android: com.video_1.GAMAT
     Standalone: com.DefaultCompany.Sala-pcipal
   buildNumber:
     Standalone: 0

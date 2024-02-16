@@ -16,7 +16,7 @@ public class NavCanvas : MonoBehaviour
     {
         if (PosSeguir != null)
         {
-            transform.position = PosSeguir.position + new Vector3(1f, 1f, 0.0f);
+            transform.position = PosSeguir.position + new Vector3(1.5f, 1f, 0.0f);
         }
     }
 }

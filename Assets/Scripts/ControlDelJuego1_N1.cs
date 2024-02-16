@@ -38,17 +38,13 @@ public class ControlDelJuego1_N1 : MonoBehaviour
     private int total1;
     private int total2;
     private int total;
-    // public GameObject sonidoFintiempo;
-    //public GameObject musicaFondo;
-    //public GameObject clone;
-    
 
 
     // Start is called before the first frame update
     void Start()
     {
         tiempoActivo = true;
-      // clone=Instantiate(musicaFondo);
+        
     }
 
     public void ActualizarMagdalenas( int magdalenatotal)

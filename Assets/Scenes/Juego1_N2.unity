@@ -5102,6 +5102,10 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 8848066200763895894, guid: b6d6e33ae3c81ac488bdad03b9b308e8, type: 3}
+      propertyPath: sounds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848066200763895894, guid: b6d6e33ae3c81ac488bdad03b9b308e8, type: 3}
       propertyPath: sounds.Array.data[2].clip
       value: 
       objectReference: {fileID: 8300000, guid: d1a6c1352e3de3744ba504bc0a3ea5b7, type: 3}
@@ -5119,7 +5123,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8848066200763895894, guid: b6d6e33ae3c81ac488bdad03b9b308e8, type: 3}
       propertyPath: sounds.Array.data[1].volume
-      value: 0.5
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8848066200763895894, guid: b6d6e33ae3c81ac488bdad03b9b308e8, type: 3}
+      propertyPath: sounds.Array.data[2].volume
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8848066200763895895, guid: b6d6e33ae3c81ac488bdad03b9b308e8, type: 3}
       propertyPath: m_RootOrder
@@ -17738,7 +17746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textTimer: {fileID: 2030857856}
-  timer: 5
+  timer: 20
   cajagalle: {fileID: 1776929}
   cajadon: {fileID: 1693253059}
   textoGalletaMarcador: {fileID: 1142365903}
