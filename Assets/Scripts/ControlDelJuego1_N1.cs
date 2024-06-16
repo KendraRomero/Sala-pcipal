@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class ControlDelJuego1_N1 : MonoBehaviour
 {
    [SerializeField] private TMP_Text textTimer;
-   [SerializeField, Tooltip("Tiempo en segundos")] private float timer;
-
-    //Nivel 1
+   [SerializeField, Tooltip("Tiempo en segundos")] public float timer;
     public  cajacupcakescript cajacup;
     public cajapiruletascript cajapiru;
     public TextMeshProUGUI textoMagdalenaMarcador;
@@ -22,31 +19,46 @@ public class ControlDelJuego1_N1 : MonoBehaviour
     public TextMeshProUGUI textoResultadoCorrecto;
     public TextMeshProUGUI textoCorrecto;
     public TextMeshProUGUI textoInorrecto;
+    public GameObject picolaboR;
+    public GameObject botonPlay;
+    public GameObject eleccion;
     private int piruletaInter;
     private int magdalenaInter;
-
-
-    //Generic
     public Button BotonOpcA;
     public Button BotonOpcB;
     public Button BotonOpcC;
-    public TextMeshProUGUI textoPocosObjetosRecolectados;
-    public bool tiempoActivo;
     private int minutos;
     private int segundos;
     private int cent;
     private int total1;
     private int total2;
     private int total;
+    public float timerNivel;
+    private bool flag;
+    public bool fin;
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        tiempoActivo = true;
-        
+        timerNivel = 0.0f;
+        timer = 60;
+        flag = false;
+        textoCorrecto.gameObject.SetActive(false);
+        textoInorrecto.gameObject.SetActive(false);
+        textofinTiempo.gameObject.SetActive(false);
+        BotonOpcA.gameObject.SetActive(false);
+        BotonOpcB.gameObject.SetActive(false);
+        BotonOpcC.gameObject.SetActive(false);
+        fin = false;
+        magdalenaInter = 0;
+        piruletaInter = 0;
     }
-
+    void Update()
+    {
+        if (botonPlay.activeSelf == false && picolaboR.activeSelf == false  && eleccion.activeSelf==false)
+        {
+            Actualizartiempo();
+        }
+    }
     public void ActualizarMagdalenas( int magdalenatotal)
     {
         textoMagdalenaMarcador.text = "Magdalenas: " + magdalenatotal;
@@ -59,19 +71,20 @@ public class ControlDelJuego1_N1 : MonoBehaviour
 
     public void FinTiempo(int total, int total1, int total2, int magdalenatotal, int piruletatotal)
     {
-        //DestroyImmediate(clone, true);
-        //Instantiate(sonidoFintiempo);
-        if (0 >= total1)
+        fin = true;
+        if (0>= total1)
         {
-            textoPocosObjetosRecolectados.gameObject.SetActive(true);
-            Invoke("MyFunction", 3);
-            //StartCoroutine(LoadYourAsyncScene());
-            SceneManager.LoadScene("SalaPcipal");
-
+            textofinTiempo.text = "¡No se han recolectado suficientes Magdalenas ni piruletas!";
+            textofinTiempo.gameObject.SetActive(true);
+            timerNivel += Time.deltaTime;
+            if (timerNivel > 1f)
+            {
+                Start();
+                eleccion.SetActive(true);
+            }
         }
-        else
+        else if (total1 > 0 && flag==false)
         {
-            //Nivel 1
             textofinTiempo.text= "¡Es turno de la suma!\nSuma el número de piruletas y magdalenas que marcan las cajas y pulsa la respuesta correcta: " + magdalenatotal  + " + " + piruletatotal;
             textoResultadoIncorrecto1.text = total1.ToString();
             textoResultadoIncorrecto2.text = total2.ToString();
@@ -80,31 +93,23 @@ public class ControlDelJuego1_N1 : MonoBehaviour
             BotonOpcA.gameObject.SetActive(true);
             BotonOpcB.gameObject.SetActive(true);
             BotonOpcC.gameObject.SetActive(true);
+            FindObjectOfType<AudioManager>().Oneshot("FinTiempo");
+            flag = true;
         }
-
-        if (textoCorrecto.gameObject.activeInHierarchy) {
-            textofinTiempo.gameObject.SetActive(false);
-            BotonOpcA.gameObject.SetActive(false);
-            BotonOpcB.gameObject.SetActive(false);
-            BotonOpcC.gameObject.SetActive(false);
-            Invoke("MyFunction", 3);     
-            SceneManager.LoadScene("Juego1_N2");
-
-        }
-
-        else if (textoInorrecto.gameObject.activeInHierarchy)
+        if (textoCorrecto.gameObject.activeSelf==true || textoInorrecto.gameObject.activeSelf == true)
         {
-            textofinTiempo.gameObject.SetActive(false);
-            BotonOpcA.gameObject.SetActive(false);
-            BotonOpcB.gameObject.SetActive(false);
-            BotonOpcC.gameObject.SetActive(false);
-            Invoke("MyFunction", 3);
-            SceneManager.LoadScene("SalaPcipal");
-        }
+            timerNivel += Time.deltaTime;
+            
+            if (timerNivel > 1f)
+            {
+                Start();
+                ActualizarMagdalenas(magdalenaInter);
+                ActualizarPiruletas(piruletaInter);
+                eleccion.SetActive(true);        
+            }
+        } 
     }
-
-    // Update is called once per frame
-    void Update()
+    void Actualizartiempo()
     {
         timer -= Time.deltaTime;
         if (timer < 0)
@@ -117,7 +122,6 @@ public class ControlDelJuego1_N1 : MonoBehaviour
             segundos = (int)(timer - minutos * 60f);
             cent = (int)((timer - (int)timer) * 100f);
             textTimer.text = string.Format("{0:00}:{1:00}:{2:00}", minutos, segundos, cent);
-            //Nivel 1
             magdalenaInter = cajacup.contadorcake;
             ActualizarMagdalenas(magdalenaInter);
             piruletaInter = cajapiru.contadorpiruleta;
@@ -125,18 +129,12 @@ public class ControlDelJuego1_N1 : MonoBehaviour
             total1 = piruletaInter + magdalenaInter - 1;
             total2 = piruletaInter + magdalenaInter + 2;
             total = piruletaInter + magdalenaInter;
-
         }
-        else if (timer == 0) {
+        else if (timer == 0 )
+        {
             FinTiempo(total, total1, total2, magdalenaInter, piruletaInter);
             textTimer.text = string.Format("{0:00}:{1:00}:{2:00}", 0, 0, 0);
+            
         }
     }
-
-    void MyFunction()
-    {
-        Debug.Log("Cambiando Escena");
-    }
-
-
 }

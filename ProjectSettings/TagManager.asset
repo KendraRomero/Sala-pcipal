@@ -12,11 +12,16 @@ TagManager:
   - Dona
   - Galleta
   - Musica
+  - Robot
+  - Robot1
+  - Player1
+  - Banana
+  - Manzana
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - 

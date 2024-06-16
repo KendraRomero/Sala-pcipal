@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class ControlDelJuego1_N2 : MonoBehaviour
 {
    [SerializeField] private TMP_Text textTimer;
-   [SerializeField, Tooltip("Tiempo en segundos")] private float timer;
-
-    //Nivel 2
+   [SerializeField, Tooltip("Tiempo en segundos")] public float timer;
     public cajagalletascript cajagalle;
     public cajadonascript cajadon;
     public TextMeshProUGUI textoGalletaMarcador;
@@ -22,33 +19,49 @@ public class ControlDelJuego1_N2 : MonoBehaviour
     public TextMeshProUGUI textoResultadoCorrecto;
     public TextMeshProUGUI textoCorrecto;
     public TextMeshProUGUI textoInorrecto;
+    public GameObject picolaboR;
+    public GameObject botonPlay;
+    public GameObject eleccion;
     private int galletaInter;
     private int donaInter;
-
-    //Generic
     public Button BotonOpcA;
     public Button BotonOpcB;
     public Button BotonOpcC;
-    public TextMeshProUGUI textoPocosObjetosRecolectados;
-
-    public bool tiempoActivo;
     private int minutos;
     private int segundos;
     private int cent;
     private int total1;
     private int total2;
     private int total;
-    //public GameObject musicaFondo;
-    //private GameObject clone;
+    public float timerNivel;
+    private bool flag;
+    public bool fin;
 
-    // Start is called before the first frame update
     void Start()
     {
-        tiempoActivo = true;
-        //clone = Instantiate(musicaFondo);
+        timerNivel = 0.0f;
+        timer = 60;
+        flag = false;
+        textoCorrecto.gameObject.SetActive(false);
+        textoInorrecto.gameObject.SetActive(false);
+        textofinTiempo.gameObject.SetActive(false);
+        BotonOpcA.gameObject.SetActive(false);
+        BotonOpcB.gameObject.SetActive(false);
+        BotonOpcC.gameObject.SetActive(false);
+        fin = false;
+        galletaInter = 0;
+        donaInter = 0;
+
     }
 
+    void Update()
+    {
+        if (botonPlay.activeSelf == false && picolaboR.activeSelf == false && eleccion.activeSelf == false)
+        {
+            Actualizartiempo();
+        }
 
+    }
     public void ActualizarGalletas(int galletatotal)
     {
         textoGalletaMarcador.text = "Galletas: " + galletatotal;
@@ -56,23 +69,27 @@ public class ControlDelJuego1_N2 : MonoBehaviour
 
     public void ActualizarDonas(int donatotal)
     {
-        textoDonaMarcador.text = "Donas: " + donatotal;
+        textoDonaMarcador.text = "Donuts: " + donatotal;
     }
 
 
 
     public void FinTiempo(int total, int total1, int total2, int galletaInter, int donaInter)
     {
-        //GameObject.Destroy(clone);
-        textofinTiempo.gameObject.SetActive(true);
-        if ((0==galletaInter) && (0==donaInter))
+        if (0 >= total2)
         {
-            textoPocosObjetosRecolectados.gameObject.SetActive(true);
-            Invoke("MyFunction", 3);
-            SceneManager.LoadScene("SalaPcipal");
+            textofinTiempo.text = "¡No se han recolectado Galletas ni Donuts!";
+            textofinTiempo.gameObject.SetActive(true);
+            timerNivel += Time.deltaTime;
+            if (timerNivel > 1f)
+            {
+                Start();
+                ActualizarGalletas(galletaInter);
+                ActualizarDonas(donaInter);
+                eleccion.SetActive(true);
+            }
         }
-    
-        else 
+        else if (total2 > 0 && flag == false)
         {
             if (galletaInter > donaInter)
             {
@@ -81,7 +98,7 @@ public class ControlDelJuego1_N2 : MonoBehaviour
             }
             else
             {
-                textofinTiempo.text = "¡Es turno de la resta!\nResta el número de donas y galletas que marcan las cajas y pulsa la respuesta correcta: " + donaInter + " - " + galletaInter;
+                textofinTiempo.text = "¡Es turno de la resta!\nResta el número de donuts y galletas que marcan las cajas y pulsa la respuesta correcta: " + donaInter + " - " + galletaInter;
 
             }
             textoResultadoIncorrecto1.text = total1.ToString();
@@ -91,32 +108,22 @@ public class ControlDelJuego1_N2 : MonoBehaviour
             BotonOpcA.gameObject.SetActive(true);
             BotonOpcB.gameObject.SetActive(true);
             BotonOpcC.gameObject.SetActive(true);
+            FindObjectOfType<AudioManager>().Oneshot("FinTiempo");
+            flag = true;
         }
-        
-
-        if (textoCorrecto.gameObject.activeInHierarchy)
+        if (textoCorrecto.gameObject.activeSelf == true || textoInorrecto.gameObject.activeSelf == true)
         {
-            textofinTiempo.gameObject.SetActive(false);
-            BotonOpcA.gameObject.SetActive(false);
-            BotonOpcB.gameObject.SetActive(false);
-            BotonOpcC.gameObject.SetActive(false);
-            Invoke("MyFunction", 3);
-            SceneManager.LoadScene("SalaPcipal");
-        }
+            timerNivel += Time.deltaTime;
+            fin = true;
+            if (timerNivel > 1f)
+            {
+                Start();
+                eleccion.SetActive(true);
 
-        else if (textoInorrecto.gameObject.activeInHierarchy)
-        {
-            textofinTiempo.gameObject.SetActive(false);
-            BotonOpcA.gameObject.SetActive(false);
-            BotonOpcB.gameObject.SetActive(false);
-            BotonOpcC.gameObject.SetActive(false);
-            Invoke("MyFunction", 3);
-            SceneManager.LoadScene("SalaPcipal");
+            }
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    void Actualizartiempo()
     {
         timer -= Time.deltaTime;
         if (timer < 0)
@@ -134,8 +141,8 @@ public class ControlDelJuego1_N2 : MonoBehaviour
             ActualizarGalletas(galletaInter);
             donaInter = cajadon.contadordona;
             ActualizarDonas(donaInter);
-            total1 = Mathf.Abs(galletaInter - donaInter - 1);
-            total2 = Mathf.Abs(galletaInter - donaInter + 1);
+            total1 = Mathf.Abs(galletaInter - donaInter + 1);
+            total2 = Mathf.Abs(galletaInter - donaInter - 1);
             total = Mathf.Abs(galletaInter - donaInter);
 
         }
@@ -145,12 +152,5 @@ public class ControlDelJuego1_N2 : MonoBehaviour
             FinTiempo(total, total1, total2, galletaInter, donaInter);
         }
     }
-
-
-    void MyFunction()
-    {
-        Debug.Log("Cambiando Escena");
-    }
-
 
 }

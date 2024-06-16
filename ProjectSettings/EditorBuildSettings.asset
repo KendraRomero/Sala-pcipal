@@ -5,18 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SalaPcipal.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Juego2.unity
     guid: bbbb8a37e45ffbf4e8181d21d007e93b
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Juego1.unity
     guid: c6fb6db6e5db1c94481686f83a85a587
   - enabled: 0
-    path: Assets/Scenes/Juego1_N2.unity
-    guid: 56b59a0dfb29b2a4e9a4b0f453680266
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Juego3.unity
     guid: 6a575bcf47de6b84599aeb548c1ac91b

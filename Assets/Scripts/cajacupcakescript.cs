@@ -8,7 +8,10 @@ public class cajacupcakescript : MonoBehaviour
 
     // Start is called before the first frame update
     public int contadorcake;
- 
+    public GameObject eleccion;
+    public GameObject botonplay;
+    public GameObject textofintiempo;
+
     void Start()
     {
         contadorcake = 0;
@@ -16,16 +19,30 @@ public class cajacupcakescript : MonoBehaviour
 
     void Update()
     {
+        if (eleccion.activeSelf == true )
+        {
+            Start();
+        }
 
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Cupcake")
+        if (collision.gameObject.CompareTag("Cupcake"))
         {
             contadorcake++;
-            FindObjectOfType<AudioManager>().Play("win");
+            FindObjectOfType<AudioManager>().Oneshot("win"); 
         }
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Cupcake"))
+        {
+            contadorcake--;
+            if ( eleccion.activeSelf != true && textofintiempo.activeSelf != true)
+            {
+                FindObjectOfType<AudioManager>().Oneshot("error");
+            }
+        }
+    }
 }

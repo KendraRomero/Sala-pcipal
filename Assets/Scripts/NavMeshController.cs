@@ -2,32 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class NavMeshController : MonoBehaviour
 {
-    public Transform objetivo;
     NavMeshAgent agent = null;
     Animator anim;
+    private GameObject[] avatar;
 
 
     void Start()
     {
        agent = GetComponent<NavMeshAgent>();
        anim = GetComponent<Animator>();
+       avatar = GameObject.FindGameObjectsWithTag("Player");
+
+    }
+
+    private void Awake()
+    {
+        
     }
 
     void Update()
     {
-        if (objetivo != null)
+     
+        avatar = GameObject.FindGameObjectsWithTag("Player");
+        if (avatar[0] != null)
         {
-            agent.destination = objetivo.position + new Vector3(1.5f, 0.0f, 1.5f);
+            agent.destination = avatar[0].transform.position + new Vector3(1.5f, 0.0f, 1.5f);
         }
-        else
+        else if (avatar[0] == null)
         {
-            agent.destination =  new Vector3(-5.591593f, -1.037843f, 8.644474f);
+            agent.destination =  new Vector3(10.48f, 1.21f, -113.21f);
         }
         
         UpdateAnimation();
+      
     }
 
     void UpdateAnimation()
